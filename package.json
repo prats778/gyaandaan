@@ -8,7 +8,7 @@
   },
   "scripts": {
     "open-app": "gulp open-app",
-    "start": "npm run open-app",
+    "start": "node server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "gulp-watch"
   },
@@ -45,5 +45,12 @@
     "gulp-sourcemaps": "^2.6.5",
     "gulp-open": "^3.0.1"
   },
-  "homepage": "http://creative-tim.com/product/material-dashboard"
+  "homepage": "http://creative-tim.com/product/material-dashboard",
+  "dependencies": {
+    "express": "^4.17.2",
+    "live-server": "^1.2.1",
+    "mongoose": "^6.1.6",
+    "path": "^0.12.7",
+    "socket.io": "^4.4.1"
+  }
 }
