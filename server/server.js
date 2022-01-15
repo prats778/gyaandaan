@@ -21,9 +21,19 @@ app.use(express.static(static_path));
 // app.set("views",template_path);
 // hbs.registerPartials(partials_path);
 
+var MongoClient = require('mongodb').MongoClient;
+var uri = "mongodb://prats:14augustboom@cluster0-shard-00-00.eq6x1.mongodb.net:27017,cluster0-shard-00-01.eq6x1.mongodb.net:27017,cluster0-shard-00-02.eq6x1.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-a784sn-shard-0&authSource=admin&retryWrites=true&w=majority";
+MongoClient.connect(uri, function(err, client) {
+  const collection = client.db("test").collection("devices");
+  console.log("connected");
+  // perform actions on the collection object
+  client.close();
+});
+
 app.get('/',(req,res)=>{
     res.render("index")
 });
+
 
 // app.get('/signupmentee',(req,res)=>{
 //     res.render("signupmentee");
