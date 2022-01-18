@@ -6,7 +6,7 @@ const path=require("path");
 
 // require("./db/conn");
 
-// const Register=require('./models/registers');
+const Register=require('./models/user');
 const port=process.env.PORT || 3000;
 
 const static_path=path.join(__dirname,"../");
@@ -16,11 +16,13 @@ const static_path=path.join(__dirname,"../");
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
-app.use(express.static(static_path));
+// app.use(express.static(static_path));
 // app.set("view engine","hbs");
 // app.set("views",template_path);
 // hbs.registerPartials(partials_path);
 
+
+//database connect
 var MongoClient = require('mongodb').MongoClient;
 var uri = "mongodb://prats:14augustboom@cluster0-shard-00-00.eq6x1.mongodb.net:27017,cluster0-shard-00-01.eq6x1.mongodb.net:27017,cluster0-shard-00-02.eq6x1.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-a784sn-shard-0&authSource=admin&retryWrites=true&w=majority";
 MongoClient.connect(uri, function(err, client) {
@@ -30,41 +32,32 @@ MongoClient.connect(uri, function(err, client) {
   client.close();
 });
 
+
 app.get('/',(req,res)=>{
-    res.render("index")
+    // res.render("index")
+    res.send("hi");
 });
 
-
-// app.get('/signupmentee',(req,res)=>{
-//     res.render("signupmentee");
-// });
-// app.get('/signupmentor',(req,res)=>{
-//     res.render("signupmentor");
-// });
-// app.get('/signupbtn',(req,res)=>{
-//     res.render("signupbtn");
-// });
-// app.get('/login',(req,res)=>{
-//     res.render("sign-in");
-// });
-
-// //create new user in db
-// app.post('/registermentee',async(req,res)=>{
-// try {
-// const registeruser=new Register({
-//     name:req.body.name,
-//     password:req.body.password,
-//     phone:req.body.phone,
-//     email:req.body.email,
-//     role:"mentee",
-//     interest:req.body.interest
-// });
-// registeruser.save();
+//create new user in db
+app.post('/register_user',async(req,res)=>{
+try {
+console.log(req.body);
+console.log("check-->",req.body.experience);  
+const registeruser=new Register({
+    name:req.body.name,
+    password:req.body.password,
+    phone:req.body.phone,
+    email:req.body.email,
+    role:req.body.role,
+    interests:req.body.interest
+});
+registeruser.save();
+res.send("user registered");
 // res.status(201).render('index');
-// } catch (error) {
-//     res.status(400).send(error);
-// }
-// });
+} catch (error) {
+    res.status(400).send(error);
+}
+});
 // app.post('/registermentor',async(req,res)=>{
 //     try {
 //     const registeruser=new Register({
@@ -85,5 +78,5 @@ app.get('/',(req,res)=>{
 //     });
 
 app.listen(port,()=>{
-console.log(`Listening at port http://localhost:${port}/login`);
+console.log(`Listening at port http://localhost:${port}`);
 })
