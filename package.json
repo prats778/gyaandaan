@@ -1,57 +1,19 @@
 {
-  "name": "material-dashboard",
-  "version": "1.0.0",
-  "description": "Freebie Dashboard for Bootstrap 5",
-  "main": "pages/dashboard.html",
-  "directories": {
-    "example": "root"
-  },
+  "name": "ejs-test",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "open-app": "gulp open-app",
-    "start": "node server/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "gulp-watch"
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/creativetimofficial/material-dashboard.git"
-  },
-  "keywords": [
-    "material dashboard",
-    "bootstrap 5",
-    "dashboard",
-    "creative tim",
-    "html dashboard",
-    "html css dashboard",
-    "web dashboard",
-    "freebie",
-    "free bootstrap dashboard",
-    "css3 dashboard",
-    "bootstrap dashboard",
-    "frontend",
-    "responsive bootstrap dashboard"
-  ],
-  "author": "Creative Tim <hello@creative-tim.com> (https://www.creative-tim.com/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/creativetimofficial/material-dashboard/issues"
-  },
-  "devDependencies": {
-    "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^7.0.1",
-    "gulp-clean": "^0.4.0",
-    "gulp-install": "^1.1.0",
-    "gulp-sass": "^4.1.0",
-    "gulp-sourcemaps": "^2.6.5",
-    "gulp-open": "^3.0.1"
-  },
-  "homepage": "http://creative-tim.com/product/material-dashboard",
   "dependencies": {
-    "express": "^4.17.2",
-    "live-server": "^1.2.1",
-    "mongodb": "^4.3.0",
-    "mongoose": "^6.1.6",
-    "path": "^0.12.7",
-    "socket.io": "^4.4.1"
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "^3.1.6",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.15"
   }
 }
