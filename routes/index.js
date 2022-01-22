@@ -3,7 +3,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('first', { data: 'Express' });
+  let mat = [ [ "hello", "hi", "bro"], [ "This", "is", "table"]]
+  res.render('first', 
+    { data: 'Express', name : "roders", arr : [ "hello", "hi",  "bro" ], show : 0, role : "mentee", matrix : mat });
 });
 
 router.get('/pages/sign-in.html', (req, res, next) => {
@@ -25,8 +27,19 @@ router.use('/', (req, res, next) => {
 });
 
 router.get('/pages/dashboard.html', (req, res, next) => {
+  // ping /pages/dashboard.html?role=mentor : for mentor
+  let matrix = [ 
+    ["Slots", "Jan 22", "Jan 23", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["6-7", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["6-7", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["6-7", "booked", "available", "Jan 24", "available", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["6-7", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "available", "Jan 28", "Jan 29"], 
+    ["6-7", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["6-7", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+];
+
   res.render('dashboard', 
-    { email : "Rams@cena.com", name : "Rams Cena", role : "Mentor", about : "I am something", mobile : "9433890117"  });
+    { email : "Rams@cena.com", name : "Rams Cena", role : req.query.role, about : "I am something", mobile : "9433890117", table : matrix });
 });
 
 router.get('/pages/profile.html', (req, res, next) => {

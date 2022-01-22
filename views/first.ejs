@@ -6,8 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>First Ejs</title>
 </head>
+<style>
+    .tb-2 {
+        border: 2px solid black;
+    }
+    .tb-1 {
+        border: 2px solid black;
+    }
+
+</style>
 <body>
     <h1>Hey Testing EJS</h1>
     <h3>This is dynamic : <%= data %> </h3>
+
+    <% if(show > 0) { %>
+        <b>Critical data</b>
+    <% } %>
+
+    <table class="tb-1">
+        <thead>
+            <tr class="tb-1">
+                <th>H1</th>
+                <th>H2</th>
+                <th>H3</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>hello</th>
+                <th>bro</th>
+                <th>hi</th>
+            </tr>
+            <tr>
+                <th>how</th>
+                <th>are</th>
+                <th>you</th>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h4>Something Here</h4>
+    <% if (matrix.length > 0) { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>col1</th>
+                    <th>col2</th>
+                    <th>col3</th>
+                </tr>
+            </thead>
+            <tbody>
+            <% for(let i=0; i<matrix.length; i++) { %>
+                <tr>
+                    <% for(let j=0; j<matrix[i].length; j++) { %>
+                        <th> <%= matrix[i][j] %> </th>
+                    <% } %>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+    <% } %>
+
 </body>
+<script>
+    console.log("starting...")
+
+</script>
 </html>
