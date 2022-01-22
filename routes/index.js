@@ -25,7 +25,8 @@ router.use('/', (req, res, next) => {
 });
 
 router.get('/pages/dashboard.html', (req, res, next) => {
-  res.render('dashboard');
+  res.render('dashboard', 
+    { email : "Rams@cena.com", name : "Rams Cena", role : "Mentor", about : "I am something", mobile : "9433890117"  });
 });
 
 router.get('/pages/profile.html', (req, res, next) => {

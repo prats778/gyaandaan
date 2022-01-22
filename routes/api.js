@@ -22,7 +22,8 @@ router.post('/sign-up',async (req, res, next) => {
         } catch (error) {
             res.status(400).send(error);
         }
-        res.send("user registered");
+        // res.send("user registered");
+        res.redirect("/pages/sign-in.html");
 });
 
 router.post('/sign-in',async (req, res, next) => {
