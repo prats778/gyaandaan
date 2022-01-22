@@ -15,7 +15,14 @@ router.get('/pages/sign-up.html', (req, res, next) => {
 });
 
 // check auth here - make others protected
-
+router.use('/', (req, res, next) => {
+  console.log( "auth ", req.cookies.ID);
+  // if(req.cookies.ID !== 1991){
+  //   res.send("Need to Sign In first");
+  // }
+  // else next();  
+  next();
+});
 
 router.get('/pages/dashboard.html', (req, res, next) => {
   res.render('dashboard');
