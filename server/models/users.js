@@ -24,8 +24,8 @@ const userSchema = new mongoose.Schema({
       type:[String],
       required:false
     },
-    experience:{
-      type:Number,
+    about:{
+      type:String,
       required:false
     }
 });

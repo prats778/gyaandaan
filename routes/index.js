@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+const Register=require('../server/models/users');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   let mat = [ [ "hello", "hi", "bro"], [ "This", "is", "table"]]
@@ -28,18 +28,29 @@ router.use('/', (req, res, next) => {
 
 router.get('/pages/dashboard.html', (req, res, next) => {
   // ping /pages/dashboard.html?role=mentor : for mentor
+  
   let matrix = [ 
     ["Slots", "Jan 22", "Jan 23", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["6-7", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["6-7", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["4-5", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["5-6", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
     ["6-7", "booked", "available", "Jan 24", "available", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["6-7", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "available", "Jan 28", "Jan 29"], 
-    ["6-7", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["6-7", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["7-8", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "available", "Jan 28", "Jan 29"], 
+    ["8-9", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["9-10", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
 ];
-
-  res.render('dashboard', 
-    { email : "Rams@cena.com", name : "Rams Cena", role : req.query.role, about : "I am something", mobile : "9433890117", table : matrix });
+  
+  Register.findOne(
+    { email: req.cookies.email },
+    async function (err, data) {
+      if (!data) {
+        res.render("sign-in", { created: "" });
+      } else {
+          console.log(data);
+          res.render('dashboard', 
+            { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, table : matrix });          
+        }
+    }
+  );
 });
 
 router.get('/pages/profile.html', (req, res, next) => {
@@ -48,6 +59,10 @@ router.get('/pages/profile.html', (req, res, next) => {
 
 router.get('/pages/notifications.html', (req, res, next) => {
   res.render('notifications');
+});
+
+router.get('/pages/discussion', (req, res, next) => {
+  res.render('discussion');
 });
 
 router.get('/pages/tables.html', (req, res, next) => {
