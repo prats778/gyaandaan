@@ -664,7 +664,11 @@
                             </div>
                           <% } else { %>  
                             <div class="d-flex flex-column justify-content-center">
-                              <h6 class="mb-0 text-sm"> <%= table[i][j] %> </h6>
+
+                            <button type="button" class="btn btn-secondary" data-toggle="popover" data-placement="top" title="Tooltip on top">
+                            <h6 class="mb-0 text-sm"> <%= table[i][j] %> </h6>
+                            </button>                            
+                              
                             </div>
                           <% } %>
 

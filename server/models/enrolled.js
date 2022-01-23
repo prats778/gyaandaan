@@ -4,7 +4,7 @@ const enrolledSchema = new mongoose.Schema({
       type:String,
       required:true
     },
-    subjects:{
+    subject:{
       type:String,
       required:false
     },
@@ -15,7 +15,15 @@ const enrolledSchema = new mongoose.Schema({
     timings:{
       type:[String],
       required:false
-    }    
+    },
+    suitors:{
+      type:[String],
+      required:false
+    } ,
+    resources:{
+      type:[String],
+      required:false
+    }       
 });
 
 const docobject=new mongoose.model("Enrolled",enrolledSchema);

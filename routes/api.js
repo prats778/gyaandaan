@@ -5,16 +5,27 @@ const Register=require('../server/models/users');
 router.post('/sign-up',async (req, res, next) => {
     console.log("Sign-up ", req.body);
     // res.send({status : "ok", what : req.body});
+    let subjects=[];
+    if(req.body.others)
+        subjects=req.body.others.split(',');
+    if(req.body.maths)
+        subjects.push("maths");
+    if(req.body.science)
+        subjects.push("science");
+    if(req.body.english)
+        subjects.push("english");    
+
     try {
         console.log(req.body);
         // console.log("check-->",req.body.experience);  
         const registeruser=new Register({
             name:req.body.name,
             password:req.body.password,
-            // phone:req.body.phone,
-            email:req.body.email
-            // role:req.body.role,
-            // interests:req.body.interest
+            phone:req.body.phone,
+            email:req.body.email,
+            role:req.body.role,
+            interests:subjects,
+            about:req.body.about
         });
         registeruser.save();
         
