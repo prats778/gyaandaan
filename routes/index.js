@@ -54,5 +54,8 @@ router.get('/pages/tables.html', (req, res, next) => {
   res.render('tables');
 });
 
+router.get('/pages/slot-book', (req, res, next) => {
+  res.render('slot-book', { id : 77, date : "25 Jan", time : "6PM - 7PM" });
+});
 
 module.exports = router;

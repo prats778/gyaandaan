@@ -41,4 +41,9 @@ router.post('/sign-in',async (req, res, next) => {
     res.send("Password didnt match"); 
 });
 
+router.post('/slot-booking', (req, res, next) => {
+    console.log("SLot : ", req.body);
+    res.send("Booked!!")
+});
+
 module.exports = router;
