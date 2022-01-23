@@ -53,8 +53,7 @@ router.post('/sign-in',async (req, res, next) => {
 });
 
 router.post('/slot-booking', (req, res, next) => {
-    console.log("SLot : ", req.body);
-    res.send("Booked!!")
+
 });
 
 module.exports = router;

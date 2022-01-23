@@ -2,6 +2,16 @@ var express = require('express');
 var router = express.Router();
 const Register=require('../server/models/users');
 /* GET home page. */
+let matrix = [ 
+    ["Slots", "Jan 22", "Jan 23", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["4-5", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["5-6", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["6-7", "booked", "available", "Jan 24", "available", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["7-8", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "available", "Jan 28", "Jan 29"], 
+    ["8-9", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["9-10", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+];
+
 router.get('/', function(req, res, next) {
   let mat = [ [ "hello", "hi", "bro"], [ "This", "is", "table"]]
   res.render('first', 
@@ -28,16 +38,6 @@ router.use('/', (req, res, next) => {
 
 router.get('/pages/dashboard.html', (req, res, next) => {
   // ping /pages/dashboard.html?role=mentor : for mentor
-  
-  let matrix = [ 
-    ["Slots", "Jan 22", "Jan 23", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["4-5", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["5-6", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["6-7", "booked", "available", "Jan 24", "available", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["7-8", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "available", "Jan 28", "Jan 29"], 
-    ["8-9", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["9-10", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-];
   
   Register.findOne(
     { email: req.cookies.email },
@@ -70,7 +70,9 @@ router.get('/pages/tables.html', (req, res, next) => {
 });
 
 router.get('/pages/slot-book', (req, res, next) => {
-  res.render('slot-book', { id : 77, date : "25 Jan", time : "6PM - 7PM" });
+  // res.render('slot-book', { id : 77, date : "25 Jan", time : "6PM - 7PM" });
+    console.log("Slot : ", req.query);
+    res.send("Booked!!")  
 });
 
 module.exports = router;
