@@ -28,7 +28,7 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                         <h6 class="text-white text-capitalize ps-3"> 
-                            Book for slot id : <%= id %>  
+                            Book for slot for : <%= name %>  
                         </h6>
                         <b class="text-white text-capitalize ps-3"><%= date %> <%= time %></b>
                     </div>
@@ -36,37 +36,35 @@
             </div>
 
             <div class="container justify-contents-center mt-3">
-                <form class="col-8 m-auto" action="/api/slot-booking" method="POST">
-                    <div class="form-group mb-1">
-                      <label for="subject">Subject</label>
-                      <input name="subject" type="text" class="form-control" id="subject" placeholder="Maths">
-                    </div>
-                    <div class="form-group mb-1">
-                      <label for="link">Meet Link</label>
-                      <input name="link" type="url" class="form-control" id="link" placeholder="https://xyz.com">
-                    </div>
-                    <div class="form-group mb-1">
-                      <label for="class">Target Group</label>
-                      <select name="class" multiple class="form-control" id="class">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10</option>
-                      </select>
-                    </div>
-                    <div class="form-group mb-2">
-                      <label for="about">About</label>
-                      <textarea name="about" class="form-control" id="about" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                  </form>
-            </div>
+              <% let url="/pages/slot-booking?date=" +date+ "&time=" +time + "&name=" + name %>
+              <form class="col-8 m-auto" action=<%=url%> method="POST">
+                  <div class="form-group mb-1">
+                    <label for="subject">Subject</label>
+                    <input name="subject" type="text" class="form-control" id="subject" placeholder="Maths">
+                  </div>
+                  <div class="form-group mb-1">
+                    <label for="link">Meet Link</label>
+                    <input name="link" type="url" class="form-control" id="link" placeholder="https://xyz.com">
+                  </div>
+                  <div class="form-group mb-1">
+                    <label for="class">Target Group</label>
+                    <select name="class" multiple class="form-control" id="class">
+                        <option value-"middle-school">Classes <= 10</option>
+                        <option value-"high-school">High School Secondary</option>
+                        <option value-"undergrads">Graduates</option>
+                    </select>
+                  </div>
+                  <div class="form-group mb-2">
+                    <label for="about">About</label>
+                    <textarea name="about" class="form-control" id="about" rows="3" placeholder="topic of study"></textarea>
+                  </div>
+                  <div class="form-group mb-2">
+                    <label for="about">Resources:</label>
+                    <textarea name="resources" class="form-control" id="resources" rows="3" placeholder="text book names,sites references"></textarea>
+                  </div>                    
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+          </div>
 
         </div>
     </div>
