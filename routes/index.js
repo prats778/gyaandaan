@@ -2,8 +2,7 @@ var express = require('express');
 var router = express.Router();
 const Register=require('../server/models/users');
 const Schedule=require('../server/models/enrolled');
-const { connections } = require('mongoose');
-/* GET home page. */
+
 let matrix = [ 
     ["Slots", "Jan 22", "Jan 23", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
     ["4-5", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
@@ -24,6 +23,7 @@ let matrix = [
 //   ["9-10", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
 // ];
 
+/* GET home page. */
 router.get('/', function(req, res, next) {
   let mat = [ [ "hello", "hi", "bro"], [ "This", "is", "table"]]
   res.render('first', 
@@ -44,7 +44,7 @@ router.get('/public/profile', async (req, res, next) => {
     console.log("pub ", req.query);
     let data = await Register.findOne({ email: req.query.email });
     if(!data){
-      res.render("sign-in", { created: "" });
+      res.send(`<h3>No user with email '${req.query.email}'</h3>`);
     }
     else{
       console.log("data : ", data);
