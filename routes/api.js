@@ -44,9 +44,10 @@ router.post('/sign-in',async (req, res, next) => {
     const password=req.body.password;
     const useremail=await Register.findOne({email:email});
     if(useremail.password===password){
-      res.cookie("email", email);
-      res.cookie("ID" , 1991);
-      res.send("Login successful");
+        res.cookie("email", email);
+        res.cookie("ID" , 1991);
+        // res.send("Login successful");
+        res.redirect('/pages/dashboard.html');
     }
     else
     res.send("Password didnt match"); 

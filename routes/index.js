@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const Register=require('../server/models/users');
 const Schedule=require('../server/models/enrolled');
+const { connections } = require('mongoose');
 /* GET home page. */
 let matrix = [ 
     ["Slots", "Jan 22", "Jan 23", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
@@ -37,6 +38,33 @@ router.get('/pages/sign-up.html', (req, res, next) => {
   res.render('sign-up');
 });
 
+// public view profile ----
+router.get('/public/profile', async (req, res, next) => {
+  try{
+    console.log("pub ", req.query);
+    let data = await Register.findOne({ email: req.query.email });
+    if(!data){
+      res.render("sign-in", { created: "" });
+    }
+    else{
+      console.log("data : ", data);
+      // this need to store 
+      let connections = [ 
+        { name : "pub-remx",  email : "remx@gmail.com", class : "10", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+        { name : "pub-remx2", email : "remx@gmail.com", class : "1", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+        { name : "pub-remx3", email : "remx@gmail.com", class : "3", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+        { name : "pub-remx4", email : "remx@gmail.com", class : "4", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+        { name : "pub-remx5", email : "remx@gmail.com", class : "6", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+      ]; 
+      res.render('profile', 
+      { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, connections : connections, interests : data.interests });
+    }
+  }
+  catch(e){
+    res.send("something went wrong");
+  }
+});
+
 // check auth here - make others protected
 router.use('/', (req, res, next) => {
   console.log( "auth ", req.cookies.ID);
@@ -64,8 +92,29 @@ router.get('/pages/dashboard.html', (req, res, next) => {
   );
 });
 
-router.get('/pages/profile.html', (req, res, next) => {
-  res.render('profile');
+router.get('/pages/profile.html', async (req, res, next) => {
+  try{
+    let data = await Register.findOne({ email: req.cookies.email });
+    if(!data){
+      res.render("sign-in", { created: "" });
+    }
+    else{
+      console.log("data : ", data);
+      // this need to store - connections of a user
+      let connections = [ 
+        { name : "remx",  email : "remx@gmail.com", class : "10", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+        { name : "remx2", email : "remx@gmail.com", class : "1", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+        { name : "remx3", email : "remx@gmail.com", class : "3", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+        { name : "remx4", email : "remx@gmail.com", class : "4", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+        { name : "remx5", email : "remx@gmail.com", class : "6", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+      ]; 
+      res.render('profile', 
+      { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, connections : connections, interests : data.interests });
+    }
+  }
+  catch(e){
+    res.send("something went wrong");
+  }
 });
 
 router.get('/pages/notifications.html', (req, res, next) => {
@@ -150,4 +199,5 @@ router.post('/pages/slot-booking', (req, res, next) => {
       // res.send("user registered");
       res.redirect("/pages/dashboard.html");
 });
+
 module.exports = router;
