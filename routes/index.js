@@ -74,7 +74,9 @@ router.use('/', (req, res, next) => {
   // else next();  
   next();
 });
-
+router.get('/pages/virtual-contact',(req,res,next)=>{
+  res.render('virtual-contact',{room_no:0});
+});
 router.get('/pages/dashboard.html', (req, res, next) => {
   // ping /pages/dashboard.html?role=mentor : for mentor
   
