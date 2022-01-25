@@ -73,7 +73,24 @@ router.get('/pages/notifications.html', (req, res, next) => {
 });
 
 router.get('/pages/discussion', (req, res, next) => {
-  res.render('discussion');
+
+ try{ 
+  Register.findOne(
+    { email: req.cookies.email },
+    async function (err, data) {
+      if (!data) {
+        res.render("sign-in", { created: "" });
+      } else {
+          console.log("found user",data);
+          res.render("discussion",{name:data.name});
+        }
+    }
+  );  
+ }
+ catch(error){
+  res.status(400).send(error);
+ }
+
 });
 
 router.get('/pages/tables.html', (req, res, next) => {
