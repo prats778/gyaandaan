@@ -65,18 +65,32 @@ router.get('/public/profile', async (req, res, next) => {
   }
 });
 
-// check auth here - make others protected
+router.get('/pages/search.html', (req, res, next) => {
+  console.log("search page loaded ", req.query);
+  // database query -> results
+  let results = [ 
+    { name : "pub-remx",  email : "remx@gmail.com", class : "10", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+    { name : "pub-remx2", email : "remx@gmail.com", class : "1", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+    { name : "pub-remx3", email : "remx@gmail.com", class : "3", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+    { name : "pub-remx4", email : "remx@gmail.com", class : "4", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+    { name : "pub-remx5", email : "remx@gmail.com", class : "6", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+  ]; 
+  res.render('search', { name : "User", email : "not signed in",  results : results })
+});
+
+// check auth here - make others protected ---
 router.use('/', (req, res, next) => {
   console.log( "auth ", req.cookies.ID);
-  // if(req.cookies.ID !== 1991){
-  //   res.send("Need to Sign In first");
-  // }
-  // else next();  
-  next();
+  if(req.cookies.ID !== "1991"){
+    res.send(`<h3>Need to Sign In first</h3><a href="/pages/sign-in.html">sign in</a>`);
+  }
+  else next();  
 });
+
 router.get('/pages/virtual-contact',(req,res,next)=>{
   res.render('virtual-contact',{room_no:0});
 });
+
 router.get('/pages/dashboard.html', (req, res, next) => {
   // ping /pages/dashboard.html?role=mentor : for mentor
   
