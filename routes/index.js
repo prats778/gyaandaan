@@ -101,8 +101,10 @@ router.get('/pages/dashboard.html', (req, res, next) => {
         res.render("sign-in", { created: "" });
       } else {
           console.log(data);
+          let im_url = "/img/bruce-mars.jpg";
+          if(data.img_url) im_url = data.img_url;
           res.render('dashboard', 
-            { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, table : matrix });          
+            { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, table : matrix, img_url : im_url });          
         }
     }
   );

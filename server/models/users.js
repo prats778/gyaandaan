@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema({
     about:{
       type:String,
       required:false
+    },
+    img_url : {
+      type : String,
+      required : false
     }
 });
 

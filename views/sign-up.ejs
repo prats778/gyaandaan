@@ -149,7 +149,19 @@
                       <label for="about" class="form-label">About yourself</label>
                       <input name="about" type="text" class="form-control">
                     </div>
+                    
+                    <div class="input-group input-group-outline mb-3">
+                      <!-- <label for="dp" class="form-label">Upload Image</label> -->
+                      <input id="display-img" type="file" accept="image/*" class="form-control" >
+                      <div id="upload-status" class="bg-danger text-white">
+                        No file selected
+                      </div>
+                    </div>
 
+                    <div class="input-group input-group-outline mb-3">
+                      <!-- <label for="dp" class="form-label">Upload Image</label> -->
+                      <input id="img_url" name="img_url" type="hidden" class="form-control" >
+                    </div>
 
                     <div class="form-check form-check-info text-start ps-0">
                         <input name="agreeChecked" class="form-check-input" type="checkbox" id="agreeChecked" >
@@ -158,7 +170,7 @@
                       </label>
                     </div>
                     <div class="text-center">
-                      <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Sign Up</button>
+                      <button id="final-submit" disabled type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Sign Up</button>
                     </div>
                   </form>
                 </div>
@@ -193,6 +205,101 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/js/material-dashboard.min.js?v=3.0.0"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyBHSihtZFAzArZByai7ShAUiTEW3i_OZ5Y",
+      authDomain: "p2p-chat-app-683b7.firebaseapp.com",
+      databaseURL: "https://p2p-chat-app-683b7-default-rtdb.firebaseio.com",
+      projectId: "p2p-chat-app-683b7",
+      storageBucket: "p2p-chat-app-683b7.appspot.com",
+      messagingSenderId: "961564760218",
+      appId: "1:961564760218:web:814a824ebdc395b461a723",
+      measurementId: "G-LM628TMZJP"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    console.log(app);
+
+    // import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-firestore.js";
+    // console.log("okk");
+    // const db = getFirestore(app);
+    // console.log(db);
+
+    import { getStorage, ref, uploadBytes, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-storage.js";
+    console.log("okk");
+
+    const storage = getStorage(app, "gs://p2p-chat-app-683b7.appspot.com");
+    // console.log(storage);
+    
+    const imagesRef = ref(storage, 'images');
+
+    document.querySelector("#display-img").addEventListener("change", (e) => {
+      console.log("uploaded!!")
+      console.log(e.target.files[0]);
+      const file = e.target.files[0];
+
+      let status = document.getElementById("upload-status");
+      let submit = document.getElementById("final-submit");
+      console.log(submit);
+      status.classList.remove("bg-danger");
+      status.classList.add("bg-success");
+
+      const uid = "img_" + Math.random().toString(16).slice(2) + file.name;
+      // console.log("UID:", uid);
+      const storageRef = ref(imagesRef, uid);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      // Register three observers:
+      // 1. 'state_changed' observer, called any time the state changes
+      // 2. Error observer, called on failure
+      // 3. Completion observer, called on successful completion
+      uploadTask.on('state_changed', 
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          status.innerHTML = `Uploading ${parseInt(progress)}%`
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+            case 'running':
+              console.log('Upload is running');
+              break;
+          }
+        }, 
+        (error) => {
+          // Handle unsuccessful uploads
+        }, 
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            document.getElementById("img_url").value = downloadURL;
+            submit.disabled = false;
+            console.log('File available at', downloadURL);
+          });
+        }
+      );
+
+    });
+
+  </script>
+
+
 </body>
 
 </html>
