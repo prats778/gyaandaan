@@ -376,7 +376,10 @@
       console.log("logged msgs on client: ",data);
       // sender=data.sender;
       data.forEach(element => {
-        insertChat(element.sender,element.msg);  
+        if(element.sender===sender)
+              insertChat("me",element.msg);
+        else       
+              insertChat(element.sender,element.msg);  
       });
     });        
 
