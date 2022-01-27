@@ -4,6 +4,7 @@ const Register=require('../server/models/users');
 
 router.post('/sign-up',async (req, res, next) => {
     console.log("Sign-up ", req.body);
+    // res.send("ok"); return;
     // res.send({status : "ok", what : req.body});
     let subjects=[];
     if(req.body.others)
@@ -25,7 +26,8 @@ router.post('/sign-up',async (req, res, next) => {
             email:req.body.email,
             role:req.body.role,
             interests:subjects,
-            about:req.body.about
+            about:req.body.about,
+            img_url:req.body.img_url
         });
         registeruser.save();
         
@@ -43,7 +45,8 @@ router.post('/sign-in',async (req, res, next) => {
     const email=req.body.email;
     const password=req.body.password;
     const useremail=await Register.findOne({email:email});
-    if(useremail.password===password){
+    // console.log("=> ", useremail);
+    if(useremail && useremail.password===password){
         res.cookie("email", email);
         res.cookie("ID" , "1991");
         res.cookie("name",useremail.name);
@@ -51,7 +54,7 @@ router.post('/sign-in',async (req, res, next) => {
         res.redirect('/pages/dashboard.html');
     }
     else
-    res.send("Password didnt match"); 
+    res.send("Credentials didnt match"); 
 });
 
 router.post('/mentee_schedule',(req,res,next)=>{

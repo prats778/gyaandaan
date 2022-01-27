@@ -274,9 +274,11 @@ router.get('/pages/dashboard.html', (req, res, next) => {
           console.log(data);
           let schedule=await Schedule.find({tutor:data.name});
           console.log(schedule);
-
+          let im_url = "/img/bruce-mars.jpg";
+          if(data.img_url) im_url = data.img_url;
+        
           res.render('dashboard', 
-            { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, table : matrix, schedule:schedule });          
+            { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, table : matrix, schedule:schedule, img_url : im_url});          
         }
     }
   );
