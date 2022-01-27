@@ -49,12 +49,25 @@ router.post('/sign-in',async (req, res, next) => {
     if(useremail && useremail.password===password){
         res.cookie("email", email);
         res.cookie("ID" , "1991");
+        res.cookie("name",useremail.name);
         // res.send("Login successful");
         res.redirect('/pages/dashboard.html');
     }
     else
     res.send("Credentials didnt match"); 
 });
+
+router.post('/mentee_schedule',(req,res,next)=>{
+    console.log(req.body);
+    res.send("got");
+});
+
+
+router.post('/test', (req, res, next) => {
+    console.log("got: ",req.body);
+    res.send("ok");
+    // res.render('tables');
+  });
 
 router.post('/slot-booking', (req, res, next) => {
     console.log(req.body);
