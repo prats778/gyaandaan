@@ -15,6 +15,7 @@ var debug = require('debug')('ejs-test:server');
 var port = (process.env.PORT || '3000');
 // app.set('port', port);
 
+const Chats=require('../server/models/chats');
 
 const http= require('http').Server(app);
 const io = require("socket.io")(http,{
@@ -27,12 +28,20 @@ const io = require("socket.io")(http,{
 });
 
 io.on('connection', socket => {
+    Chats.find().then(result => {
+         console.log("results retreived: ",result);
+         socket.emit('output-messages',result);
+    }).catch(err=>console.log(err));
     console.log('Connected...');
     socket.on('message', (data) => {
        console.log("msg received on server side: ",data.msg," by: ",data.sender);
-      //console.log(data);
-
-      socket.broadcast.emit('message',data);
+       const message = new Chats({
+           sender:data.sender,
+           msg:data.msg
+       });
+       message.save().then(()=>{
+          socket.broadcast.emit('message',data);
+      }).catch(err=>console.log(err));
     })    
 })
 

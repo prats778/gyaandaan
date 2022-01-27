@@ -56,8 +56,10 @@ router.get('/public/profile', async (req, res, next) => {
         { name : "pub-remx4", email : "remx@gmail.com", class : "4", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
         { name : "pub-remx5", email : "remx@gmail.com", class : "6", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
       ]; 
+      let im_url = "/img/bruce-mars.jpg";
+      if(data.img_url) im_url = data.img_url;
       res.render('profile', 
-      { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, connections : connections, interests : data.interests });
+      { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, connections : connections, interests : data.interests, img_url : im_url });
     }
   }
   catch(e){
@@ -146,6 +148,9 @@ function check(subject,arr){
     return false;          
 }
 
+router.get('/pages/notifications.html',async (req,res,next)=>{
+    res.render('notifications');
+});
 router.get('/pages/search.html',async (req, res, next) => {
   console.log("search page loaded ", req.query);
   // database query -> results
@@ -225,7 +230,7 @@ router.get('/pages/search.html',async (req, res, next) => {
             interests:str,
             phone:data[j].phone,
             about:data[j].about,
-            img_src:"https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg",
+            img_src: data[j].img_url,
             score:score
           };
 
@@ -300,8 +305,10 @@ router.get('/pages/profile.html', async (req, res, next) => {
         { name : "remx4", email : "remx@gmail.com", class : "4", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
         { name : "remx5", email : "remx@gmail.com", class : "6", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
       ]; 
+      let im_url = "/img/bruce-mars.jpg";
+      if(data.img_url) im_url = data.img_url;
       res.render('profile', 
-      { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, connections : connections, interests : data.interests });
+      { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, connections : connections, interests : data.interests, img_url : im_url });
     }
   }
   catch(e){

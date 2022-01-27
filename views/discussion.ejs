@@ -370,7 +370,15 @@
       console.log("received on client: ",data.msg," from ",data.sender);
       // sender=data.sender;
       insertChat(data.sender,data.msg);
-    });   
+    });  
+    socket.on("output-messages", (data)=> {
+     
+      console.log("logged msgs on client: ",data);
+      // sender=data.sender;
+      data.forEach(element => {
+        insertChat(element.sender,element.msg);  
+      });
+    });        
 
     // socket.on("receive", function(sender,data) {
     //   console.log("received on client: ",data," from ",sender);

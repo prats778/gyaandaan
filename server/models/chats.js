@@ -6,9 +6,9 @@ const ChatsSchema = new mongoose.Schema({
     },
     receiver:{
       type:String,
-      required:true
+      required:false
     },
-    text:{
+    msg:{
       type:String,
       required:true
     }

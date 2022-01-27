@@ -46,7 +46,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="/pages/search.html">
+          <a class="nav-link text-white active bg-gradient-primary" href="/pages/search.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
@@ -97,7 +97,7 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="../pages/profile.html">
+          <a class="nav-link text-white" href="../pages/profile.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -291,25 +291,22 @@
                     </div>
                     <div class="card-body p-3">
                       <!-- <p class="mb-0 text-sm"><h6>Contact:</h6> <%= results[i].phone %></p> -->
-                      <a href="javascript:;">
-                        <h5>
+                          <h6 class="mb-3">
                           <%= results[i].name %>@
                           <% if (results[i].role==="mentor") { %>
                               teacher
                           <% } else { %>
                               student 
-                          <% } %>       
-                        </h5>
-                      </a>
-                      <p class="mb-4 text-sm">
-                        <h6>Email:</h6>
-                        <%=results[i].email %>
-                      </p>
-                      <p class="mb-4 text-sm">
-                        <h6>About:</h6>
-                        <%=results[i].about %>
-                      </p>   
-                      <p class="mb-4 text-sm">
+                          <% } %> 
+                          </h6>      
+                      
+                      <div class="mb-1 text-sm">
+                        <b>Email:</b> <%=results[i].email %> </b>
+                      </div>
+                      <div class="mb-3 text-sm">
+                        <b>About: </b> <%=results[i].about %>
+                      </div>   
+                      <p class="mb-1 text-sm">
                         <h6>Subjects:</h6>
                         <%=results[i].interests %>
                       </p>                                          
