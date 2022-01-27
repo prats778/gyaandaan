@@ -51,7 +51,10 @@ router.post('/sign-in',async (req, res, next) => {
         res.cookie("ID" , "1991");
         res.cookie("name",useremail.name);
         // res.send("Login successful");
-        res.redirect('/pages/dashboard.html');
+        if(useremail.role==="mentor")
+            res.redirect('/pages/dashboard.html');
+        else
+            res.redirect('/pages/profile.html');    
     }
     else
     res.send("Credentials didnt match"); 
