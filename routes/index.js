@@ -467,4 +467,8 @@ router.post('/pages/slot-booking', (req, res, next) => {
       res.redirect("/pages/dashboard.html");
 });
 
+router.get("/pages/logout", (req, res) => {
+  res.redirect("/");
+});
+
 module.exports = router;
