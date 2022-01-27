@@ -43,38 +43,22 @@
             <span class="nav-link-text ms-1">Search Connection</span>
           </a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/tables.html">
+         <li class="nav-item">
+          <a class="nav-link text-white " href="/pages/discussion">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
-            <span class="nav-link-text ms-1">Tables</span>
+            <span class="nav-link-text ms-1">Discussion</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/billing.html">
+          <a class="nav-link text-white " href="../pages/virtual-contact">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">receipt_long</i>
+              <i class="material-icons opacity-10">table_view</i>
             </div>
-            <span class="nav-link-text ms-1">Billing</span>
-          </a>
-        </li> -->
-        <!-- <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/virtual-reality.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">view_in_ar</i>
-            </div>
-            <span class="nav-link-text ms-1">Virtual Reality</span>
+            <span class="nav-link-text ms-1">Virtual Contact</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/rtl.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
-            </div>
-            <span class="nav-link-text ms-1">RTL</span>
-          </a>
-        </li> -->
         <li class="nav-item">
           <a class="nav-link text-white " href="../pages/notifications.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -628,12 +612,12 @@
                     <tr>
                       <% for(let j=0; j<table[i].length; j++) { %>
                       <td>
-                        <div class="d-flex px-2 py-1">
+                        <div class="d-flex">
                           <!-- <div>
                             <img src="/img/small-logos/logo-xd.svg" class="avatar avatar-sm me-3" alt="xd">
                           </div> -->
                           <% if (table[i][j] == "available") { %> 
-                            <div class="d-flex flex-column justify-content-center">
+                            <div class="d-flex flex-column justify-content-center" >
                               <button class="btn bg-success">
                                 <% let str="/pages/slot-book?time=" + String(i) + "&date=" + String(j) %>
                                 <a href=<%=str%> class="mb-0 text-sm text-white"> <%= table[i][j] %> </a>

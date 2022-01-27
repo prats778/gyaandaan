@@ -3,26 +3,17 @@ var router = express.Router();
 const Register=require('../server/models/users');
 const Schedule=require('../server/models/enrolled');
 
+
+//(prototype phase),incoming dates to be made dynamic later on
 let matrix = [ 
     ["Slots", "Jan 22", "Jan 23", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["4-5", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["5-6", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["6-7", "booked", "available", "Jan 24", "available", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["7-8", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "available", "Jan 28", "Jan 29"], 
-    ["8-9", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-    ["9-10", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
+    ["4-5", "booked", "available", "available", "booked", "booked", "booked", "booked", "booked"], 
+    ["5-6", "booked", "booked", "booked", "booked", "available", "available", "available", "available"], 
+    ["6-7", "booked", "available", "booked", "available", "available", "booked", "available", "available"], 
+    ["7-8", "booked", "booked", "available", "booked", "booked", "available", "available", "booked"], 
+    ["8-9", "booked", "available", "booked", "available", "booked", "booked", "booked", "available"], 
+    ["9-10", "booked", "available", "available", "booked", "available", "booked", "booked", "available"], 
 ];
-
-// let matrix2 = [ 
-//   ["Slots", "Jan 22", "Jan 23", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-//   ["4-5", {date:"Jan 22",time:"4-5",subject:"",target:"",}], 
-//   ["5-6", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-//   ["6-7", "booked", "available", "Jan 24", "available", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-//   ["7-8", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "available", "Jan 28", "Jan 29"], 
-//   ["8-9", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-//   ["9-10", "booked", "available", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29"], 
-// ];
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   let mat = [ [ "hello", "hi", "bro"], [ "This", "is", "table"]]
@@ -49,97 +40,30 @@ router.get('/public/profile', async (req, res, next) => {
     else{
       console.log("data : ", data);
       // this need to store 
-      let connections = [ 
-        { name : "pub-remx",  email : "remx@gmail.com", class : "10", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-        { name : "pub-remx2", email : "remx@gmail.com", class : "1", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-        { name : "pub-remx3", email : "remx@gmail.com", class : "3", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-        { name : "pub-remx4", email : "remx@gmail.com", class : "4", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-        { name : "pub-remx5", email : "remx@gmail.com", class : "6", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-      ]; 
       let im_url = "/img/bruce-mars.jpg";
       if(data.img_url) im_url = data.img_url;
+
+      let results = await Register.find();
+      let connections=[]
+      for(let i=0;i<results.length;i++)
+         {
+           if(results[i].email===data.email)
+              continue;
+           else
+              connections.push(results[i]);
+         }
+      for(let i=0;i<connections.length;i++)
+         {
+           connections[i]['room_no']=i;
+         } 
       res.render('profile', 
       { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, connections : connections, interests : data.interests, img_url : im_url });
     }
-  }
+    }
   catch(e){
     res.send("something went wrong");
   }
 });
-
-// -----------------async ,await mind fuck-----------------
-// init()
-// async function dbQuery() {
-
-//     const users = await Register.find({});
-//     return users;
-// }
-
-// async function init() {
-//     try {
-//         const data= await dbQuery();
-//         return data;
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
-// async function operation(props) {
-//   console.log("props: ",props);
-//   if(props.class)
-//   {
-//     try{
-
-//     }
-//     catch(error){
-
-//     } 
-    
-//     res.send("ok");
-//   }
-// else
-//   {
-//     console.log("not requested");
-//     let i=0;
-//     let info={};
-//     let arr=[];
-//     init().then(data=>{
-//       // console.log("info ",data)
-//       for(let j=0;j<data.length;j++){
-//         // console.log("found user ",i,data[j].name);
-//         i++;
-//         let score=i;
-
-//         info[data[j].name]={
-//           name:data[j].name,
-//           email:data[j].email,
-//           interests:data[j].interests,
-//           phone:data[j].phone,
-//           about:data[j].about,
-//           img_src:"https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg",
-//           score:score
-//         };
-//         arr.push([data[j].name,score]);
-//       }   
-//       arr.sort((a,b)=>{
-//         return b[1]-a[1];
-//       });
-//       const results=[];
-//       // console.log("array: ",arr);
-//       // console.log("info: ",info);
-//       for(let p=0;p<arr.length;p++){
-//         console.log(info[arr[p][0]]);
-//         results.push(info[arr[p][0]]);
-//       }
-//       console.log("results: ",results);
-//       return results;
-//       // console.log(arr);           
-//     }).catch(err=>console.log(err));     
-
-//   }  
-// }
-
-//-----------async wait find fuck end--------------
 
 function check(subject,arr){
     for(let i=0;i<arr.length;i++)
@@ -187,7 +111,7 @@ router.get('/pages/search.html',async (req, res, next) => {
             interests:str,
             phone:data[j].phone,
             about:data[j].about,
-            img_src:"https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg",
+            img_src:data[j].img_url,
             score:score
           };
 
@@ -264,7 +188,10 @@ router.use('/', (req, res, next) => {
 });
 
 router.get('/pages/virtual-contact',(req,res,next)=>{
-  res.render('virtual-contact',{room_no:0});
+  let room_no=0;
+  if(req.query)
+    room_no=req.query.room;
+  res.render('virtual-contact',{room_no:room_no});
 });
 
 router.get('/pages/dashboard.html', (req, res, next) => {
@@ -297,47 +224,62 @@ router.get('/pages/profile.html', async (req, res, next) => {
     }
     else{
       console.log("data : ", data);
-      // this need to store - connections of a user
-      let connections = [ 
-        { name : "remx",  email : "remx@gmail.com", class : "10", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-        { name : "remx2", email : "remx@gmail.com", class : "1", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-        { name : "remx3", email : "remx@gmail.com", class : "3", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-        { name : "remx4", email : "remx@gmail.com", class : "4", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-        { name : "remx5", email : "remx@gmail.com", class : "6", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-      ]; 
       let im_url = "/img/bruce-mars.jpg";
       if(data.img_url) im_url = data.img_url;
+
+      let results = await Register.find();
+      let connections=[]
+      for(let i=0;i<results.length;i++)
+         {
+           if(results[i].email===data.email)
+              continue;
+           else
+              connections.push(results[i]);
+         }
+      for(let i=0;i<connections.length;i++)
+         {
+           connections[i]['room_no']=i;
+         } 
       res.render('profile', 
       { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, connections : connections, interests : data.interests, img_url : im_url });
     }
   }
   catch(e){
-    res.send("something went wrong");
+    console.log(e);
+    res.send("something went wrong: ");
   }
 });
 
 router.get('/pages/peek_profile', async (req, res, next) => {
   try{
-
+    console.log("pub ", req.query);
     let data = await Register.findOne({ email: req.query.email });
     if(!data){
-      res.render("sign-in", { created: "" });
+      res.send(`<h3>No user with email '${req.query.email}'</h3>`);
     }
     else{
       console.log("data : ", data);
-      // this need to store - connections of a user
-      let connections = [ 
-        { name : "remx",  email : "remx@gmail.com", class : "10", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-        { name : "remx2", email : "remx@gmail.com", class : "1", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-        { name : "remx3", email : "remx@gmail.com", class : "3", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-        { name : "remx4", email : "remx@gmail.com", class : "4", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-        { name : "remx5", email : "remx@gmail.com", class : "6", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-      ]; 
+      // this need to store 
+      let im_url = "/img/bruce-mars.jpg";
+      if(data.img_url) im_url = data.img_url;
 
+      let results = await Register.find();
+      let connections=[]
+      for(let i=0;i<results.length;i++)
+         {
+           if(results[i].email===data.email)
+              continue;
+           else
+              connections.push(results[i]);
+         }
+      for(let i=0;i<connections.length;i++)
+         {
+           connections[i]['room_no']=i;
+         } 
       res.render('profile', 
-      { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, connections : connections, interests : data.interests });
+      { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, connections : connections, interests : data.interests, img_url : im_url });
     }
-  }
+    }
   catch(e){
     res.send("something went wrong");
   }
@@ -417,51 +359,6 @@ router.get('/pages/discussion', (req, res, next) => {
 
 });
 
-router.get('/pages/sch.html',async (req, res, next) => {
-
-  try{ 
-     console.log("viewing schedule as ",req.cookies.name);
-     if(req.cookies.name)
-       {
-        let tutor=req.query.user;
-        let data = await Schedule.find();
-        let classes=[];
-        for(let i=0;i<data.length;i++){
-           if(data[i].tutor===tutor)
-              {
-                let d={};
-                let str="";
-                str+=data[i].timings;
-                str+=" ";
-                str+=data[i].subject;
-                str+=":";
-                str+=data[i].about;
-                str+=" Target Group: ";
-                for(let j=0;j<data[i].target.length;j++)
-                      {
-                        if(j)
-                          str+=",";
-                        str+=data[i].target[j];
-                      }
-                d[id]=data[i]._id;
-                d[content]=str;     
-                classes.push(d);
-              } 
-        }
-        console.log("classes: ",classes);
-        res.render("view_schedule",{mentor:tutor,mentee:req.cookies.name,classes:classes});
-       }
-     else
-       {
-        res.render("sign-in", { created: "" });
-       }   
-  }
-  catch(error){
-   res.status(400).send(error);
-  }
- 
- });
-
  router.post('/pages/confirm_schedule', async (req, res, next) => {
       
       if(req.cookies.name)
@@ -497,7 +394,7 @@ router.get('/pages/sch.html',async (req, res, next) => {
 
         let user_data = await Register.findOne({name:req.cookies.name});
            
-        res.render("dashboard",{ email : user_data.email, name : user_data.name, role : user_data.role, about : user_data.about, mobile : user_data.phone, schedule : results});
+        res.render("dashboard",{ email : user_data.email, name : user_data.name, role : user_data.role, about : user_data.about, mobile : user_data.phone, img_url:user_data.img_url, table:matrix, schedule : results});
         }
       else
         {
