@@ -65,17 +65,188 @@ router.get('/public/profile', async (req, res, next) => {
   }
 });
 
-router.get('/pages/search.html', (req, res, next) => {
+// -----------------async ,await mind fuck-----------------
+// init()
+// async function dbQuery() {
+
+//     const users = await Register.find({});
+//     return users;
+// }
+
+// async function init() {
+//     try {
+//         const data= await dbQuery();
+//         return data;
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+// async function operation(props) {
+//   console.log("props: ",props);
+//   if(props.class)
+//   {
+//     try{
+
+//     }
+//     catch(error){
+
+//     } 
+    
+//     res.send("ok");
+//   }
+// else
+//   {
+//     console.log("not requested");
+//     let i=0;
+//     let info={};
+//     let arr=[];
+//     init().then(data=>{
+//       // console.log("info ",data)
+//       for(let j=0;j<data.length;j++){
+//         // console.log("found user ",i,data[j].name);
+//         i++;
+//         let score=i;
+
+//         info[data[j].name]={
+//           name:data[j].name,
+//           email:data[j].email,
+//           interests:data[j].interests,
+//           phone:data[j].phone,
+//           about:data[j].about,
+//           img_src:"https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg",
+//           score:score
+//         };
+//         arr.push([data[j].name,score]);
+//       }   
+//       arr.sort((a,b)=>{
+//         return b[1]-a[1];
+//       });
+//       const results=[];
+//       // console.log("array: ",arr);
+//       // console.log("info: ",info);
+//       for(let p=0;p<arr.length;p++){
+//         console.log(info[arr[p][0]]);
+//         results.push(info[arr[p][0]]);
+//       }
+//       console.log("results: ",results);
+//       return results;
+//       // console.log(arr);           
+//     }).catch(err=>console.log(err));     
+
+//   }  
+// }
+
+//-----------async wait find fuck end--------------
+
+function check(subject,arr){
+    for(let i=0;i<arr.length;i++)
+          if(subject===arr[i])
+              return true;
+    return false;          
+}
+
+router.get('/pages/search.html',async (req, res, next) => {
   console.log("search page loaded ", req.query);
   // database query -> results
-  let results = [ 
-    { name : "pub-remx",  email : "remx@gmail.com", class : "10", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-    { name : "pub-remx2", email : "remx@gmail.com", class : "1", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-    { name : "pub-remx3", email : "remx@gmail.com", class : "3", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-    { name : "pub-remx4", email : "remx@gmail.com", class : "4", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-    { name : "pub-remx5", email : "remx@gmail.com", class : "6", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
-  ]; 
-  res.render('search', { name : "User", email : "not signed in",  results : results })
+  let data = await Register.find({}); 
+  const results=[];  
+  const info={}; 
+  const arr=[];
+
+  if(req.query.class){
+
+    for(let j=0;j<data.length;j++){
+      // console.log("found user ",i,data[j].name);
+      let score=0;
+
+      for(let l=0;l<data[j].interests.length;l++)
+         {
+            if(check(data[j].interests[l],req.query.class))
+                score++;
+         }
+
+      if(data[j].role === req.query.role){
+
+          let str="";
+          for(let l=0;l<data[j].interests.length;l++)
+             {
+               if(l)
+                  str+=','
+               str+=data[j].interests[l];
+             }
+          info[data[j].name]={
+            name:data[j].name,
+            email:data[j].email,
+            role:data[j].role,
+            interests:str,
+            phone:data[j].phone,
+            about:data[j].about,
+            img_src:"https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg",
+            score:score
+          };
+
+          arr.push([data[j].name,score]);
+        }   
+    }   
+
+    arr.sort((a,b)=>{
+      return b[1]-a[1];
+    });
+    
+    // console.log("array: ",arr);
+    // console.log("info: ",info);
+    for(let p=0;p<arr.length;p++){
+      console.log(info[arr[p][0]]);
+      results.push(info[arr[p][0]]);
+    }
+        // console.log("results: ",results);  
+    //give all records in the database
+    console.log("results final: ",results); 
+    res.render('search', { name : "User", email : "not signed in",  results : results });
+  }
+  else{
+        for(let j=0;j<data.length;j++){
+          // console.log("found user ",i,data[j].name);
+          let score=j;
+
+          let str="";
+          for(let l=0;l<data[j].interests.length;l++)
+             {
+               if(l)
+                  str+=','
+               str+=data[j].interests[l];
+             }
+
+          info[data[j].name]={
+            name:data[j].name,
+            email:data[j].email,
+            role:data[j].role,
+            interests:str,
+            phone:data[j].phone,
+            about:data[j].about,
+            img_src:"https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg",
+            score:score
+          };
+
+          arr.push([data[j].name,score]);
+        }   
+        arr.sort((a,b)=>{
+          return b[1]-a[1];
+        });
+        
+        // console.log("array: ",arr);
+        // console.log("info: ",info);
+        for(let p=0;p<arr.length;p++){
+          console.log(info[arr[p][0]]);
+          results.push(info[arr[p][0]]);
+        }
+            // console.log("results: ",results);  
+        //give all records in the database
+        console.log("results final: ",results); 
+        res.render('search', { name : "User", email : "not signed in",  results : results });
+  }
+
 });
 
 // check auth here - make others protected ---
@@ -101,8 +272,11 @@ router.get('/pages/dashboard.html', (req, res, next) => {
         res.render("sign-in", { created: "" });
       } else {
           console.log(data);
+          let schedule=await Schedule.find({tutor:data.name});
+          console.log(schedule);
+
           res.render('dashboard', 
-            { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, table : matrix });          
+            { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, table : matrix, schedule:schedule });          
         }
     }
   );
@@ -133,8 +307,84 @@ router.get('/pages/profile.html', async (req, res, next) => {
   }
 });
 
-router.get('/pages/notifications.html', (req, res, next) => {
-  res.render('notifications');
+router.get('/pages/peek_profile', async (req, res, next) => {
+  try{
+
+    let data = await Register.findOne({ email: req.query.email });
+    if(!data){
+      res.render("sign-in", { created: "" });
+    }
+    else{
+      console.log("data : ", data);
+      // this need to store - connections of a user
+      let connections = [ 
+        { name : "remx",  email : "remx@gmail.com", class : "10", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+        { name : "remx2", email : "remx@gmail.com", class : "1", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+        { name : "remx3", email : "remx@gmail.com", class : "3", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+        { name : "remx4", email : "remx@gmail.com", class : "4", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+        { name : "remx5", email : "remx@gmail.com", class : "6", about : "I lobh gyaandaan", interest: ["Maths", "Chemistry"], img_src : "https://image.shutterstock.com/image-vector/remix-grunge-brush-stroke-word-260nw-1636661941.jpg"},  
+      ]; 
+
+      res.render('profile', 
+      { email : data.email, name : data.name, role : data.role, about : data.about, mobile : data.phone, connections : connections, interests : data.interests });
+    }
+  }
+  catch(e){
+    res.send("something went wrong");
+  }
+});
+
+router.post('/pages/mentee_scedule',(req,res,next)=>{
+  console.log(req.body);
+  res.send("got");
+});
+
+router.get('/pages/scheduling.html',async (req, res, next) => {
+  // res.render('view_schedule',{mentor:"prats",mentee:"nikki",classes:[{id:1,content:"blablabla"}]});
+    console.log("viewing schedule as ",req.cookies.name);
+    if(req.cookies.name)
+      {
+       let tutor=req.query.user;
+       let data = await Schedule.find();
+       let classes=[];
+       for(let i=0;i<data.length;i++){
+          if(data[i].tutor===tutor)
+             {
+               console.log("data ",data[i] , data[i].about);
+               let str="";
+               str+=data[i].timings;
+               str+="  ";
+               str+=data[i].subject;
+               str+=":";
+               if(data[i].about)
+                  str+=data[i].about;
+               else 
+                  str+="general  ";   
+               str+="  Target Group: ";
+               for(let j=0;j<data[i].target.length;j++)
+                     {
+                       if(j)
+                         str+=",";
+                       str+=data[i].target[j];
+                     }
+               let d={
+                 id:i,
+                 content:str
+               };      
+              //  console.log(d);
+              //  d[id]=data[i]._id;
+              //  d[content]=str;     
+               classes.push(d);
+             } 
+       }
+       console.log("classes: ",classes);
+      //  res.send("ok"); 
+       res.render("view_schedule",{mentor:tutor,mentee:req.cookies.name,classes:classes});
+      }
+    else
+      {
+       res.render("sign-in", { created: "" });
+      }   
 });
 
 router.get('/pages/discussion', (req, res, next) => {
@@ -158,8 +408,103 @@ router.get('/pages/discussion', (req, res, next) => {
 
 });
 
+router.get('/pages/sch.html',async (req, res, next) => {
+
+  try{ 
+     console.log("viewing schedule as ",req.cookies.name);
+     if(req.cookies.name)
+       {
+        let tutor=req.query.user;
+        let data = await Schedule.find();
+        let classes=[];
+        for(let i=0;i<data.length;i++){
+           if(data[i].tutor===tutor)
+              {
+                let d={};
+                let str="";
+                str+=data[i].timings;
+                str+=" ";
+                str+=data[i].subject;
+                str+=":";
+                str+=data[i].about;
+                str+=" Target Group: ";
+                for(let j=0;j<data[i].target.length;j++)
+                      {
+                        if(j)
+                          str+=",";
+                        str+=data[i].target[j];
+                      }
+                d[id]=data[i]._id;
+                d[content]=str;     
+                classes.push(d);
+              } 
+        }
+        console.log("classes: ",classes);
+        res.render("view_schedule",{mentor:tutor,mentee:req.cookies.name,classes:classes});
+       }
+     else
+       {
+        res.render("sign-in", { created: "" });
+       }   
+  }
+  catch(error){
+   res.status(400).send(error);
+  }
+ 
+ });
+
+ router.post('/pages/confirm_schedule', async (req, res, next) => {
+      
+      if(req.cookies.name)
+        {
+        let tutor=req.query.mentor;
+        let student=req.query.mentee;
+
+        let class_ids=[];
+        if(Array.isArray(req.body.class))
+             class_ids=req.body.class;
+        else
+             class_ids.push(req.body.class);
+
+        console.log("class_ids",class_ids);
+
+        let data = await Schedule.find();
+
+        let results=[]
+        for(let i=0;i<data.length;i++){
+            for(let j=0;j<class_ids.length;j++)
+              {
+                class_ids[i]=+class_ids[i];
+                console.log(i," vs ",class_ids[j]);
+                if(i===class_ids[j])
+                     {
+                      console.log("matched"); 
+                      results.push(data[i]);
+                     }
+                      
+              } 
+        }
+        console.log("result classes: ",results);
+
+        let user_data = await Register.findOne({name:req.cookies.name});
+           
+        res.render("dashboard",{ email : user_data.email, name : user_data.name, role : user_data.role, about : user_data.about, mobile : user_data.phone, schedule : results});
+        }
+      else
+        {
+        res.render("sign-in", { created: "" });
+        }  
+
+ });
+
 router.get('/pages/tables.html', (req, res, next) => {
   res.render('tables');
+});
+
+router.post('/pages/test', (req, res, next) => {
+  console.log("got: ",req.body.subject);
+  res.send("ok");
+  // res.render('tables');
 });
 
 router.get('/pages/slot-book', (req, res, next) => {
