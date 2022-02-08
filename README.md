@@ -20,7 +20,7 @@ Contents
 ### Working Demo of our App
 ---
 
-[Deployedlink](#https://gyaandaan.herokuapp.com/)
+[Deployedlink](https://gyaandaan.herokuapp.com/)
 
 ### Tech-Stacks Used
 ---
